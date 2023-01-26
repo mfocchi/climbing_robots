@@ -2,13 +2,11 @@
 
 # Climbing Robot		 
 
-This software is a reduced version of  [Locosim](https://github.com/mfocchi/locosim), to provide the simulations of a climbing robot called CLIO presented in the paper:
+This software is a reduced version of  [Locosim](https://github.com/mfocchi/locosim), to provide the simulations of a climbing robot called CLIO presented in the paper: [CLIO: a Novel Robotic Solution for Exploration and Rescue Missions in Hostile Mountain Environments](https://arxiv.org/abs/2209.09693) 
 
- [CLIO: a Novel Robotic Solution for Exploration and Rescue Missions in Hostile Mountain Environments](https://arxiv.org/abs/2209.09693) 
+Locosim is composed by a **roscontrol** node called **ros_impedance_controller** (written in C++) that interfaces the python ros node (where the controller is written) to a Gazebo simulator. You can run the script  [climbingrobot_controller.py](https://github.com/mfocchi/climbing_robots/blob/master/robot_control/base_controllers/climbingrobot_controller.py) to start the Gazebo simulation. The optimization made with PINS is not available due to licensing issues, we report only the validation an equivalent (but slower)  optimization made in matlab. You can set the target point in   [optimal_control.m](https://github.com/mfocchi/climbing_robots/blob/master/matlab/optimization/optimal_control.m)  then simulate with the script [matlab_sim.m](https://github.com/mfocchi/climbing_robots/blob/master/matlab/simulation/matlab_sim.m). Remember to set the flag VALIDATION=false to simulate the result of your optimization. With VALIDATION=true you will just get the validation plot present in the paper, that was obtained from and optimization done in PINS. 
 
-Locosim is composed by a **roscontrol** node called **ros_impedance_controller** (written in C++) that interfaces the python ros node (where the controller is written) to a Gazebo simulator. You can run the script **robot_control/base_controller/climbingrobot_controlle.py** to start the Gazebo simulation. The optimization made with PINS is not available due to licensing issues, we report an equivalent matlab optimization in matlab/optimization/
-
-# Dependencies: Installation on LINUX
+# Install dependencies (on LINUX)
 
 ### SOFTWARE VERSIONS:
 
@@ -191,7 +189,7 @@ cd ~/ros_ws/
 Now you can clone the repository inside the ROS workspace you just created:
 
 ```
-git clone https://github.com/mfocchi/locosim.git
+git clone https://github.com/mfocchi/climbing_robots.git
 ```
 
 now recompile again (then this step won't bee needed anymore if you just work in python unless you do not modify / create additional ROS packages)
@@ -228,7 +226,7 @@ copy the following lines (at the end of the .bashrc), remember to replace the st
 source /opt/ros/ROS_VERSION/setup.bash
 source $HOME/ros_ws/install/setup.bash
 export PATH=/opt/openrobots/bin:$PATH
-export LOCOSIM_DIR=$HOME/ros_ws/src/locosim
+export LOCOSIM_DIR=$HOME/ros_ws/src/climbing_robots
 export PYTHONPATH=/opt/openrobots/lib/pythonPYTHON_VERSION/site-packages:$LOCOSIM_DIR/robot_control:$PYTHONPATH
 export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:/opt/openrobots/share/
 ```

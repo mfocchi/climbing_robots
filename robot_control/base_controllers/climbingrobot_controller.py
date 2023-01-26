@@ -303,8 +303,6 @@ def talker(p):
     p.initVars()
     p.q_des = np.copy(p.q_des_q0)
 
-
-
     #loop frequency
     rate = ros.Rate(1/conf.robot_params[p.robot_name]['dt'])
     p.updateKinematicsDynamics()
@@ -313,27 +311,14 @@ def talker(p):
     # jump parameters
     p.startJump = 0.5
 
-
-    # with stiffness (does not reach target)
-    # p.jumps = [{"thrustDuration" : 0.05, "p0": np.array([0.377, 0., -3.]), "targetPos": np.array([0, 5., -8.]), "Fun": 4.5578, "Fut": 458.8895, "K_rope": 0.1000, "Tf": 1.0560}]
-    # # {"Fun": 115.9, "Fut": 73, "K_rope": 14.4, "Tf": 0.93}]
-
     #override with matlab stuff
     if p.LOAD_MATLAB_TRAJ:
         if p.MARCO_APPROACH:
             # single jump
             p.matvars = mio.loadmat('test_optim_marco.mat', squeeze_me=True,struct_as_record=False)
-            #p.matvars = mio.loadmat('exp4.mat', squeeze_me=True, struct_as_record=False)
-
             p.jumps = [{"time": p.matvars['solution'].time, "thrustDuration" : p.matvars['T_th'], "p0": p.matvars['p0'], "targetPos": p.matvars['pf'],  "Fun": p.matvars['solution'].Fun, "Fut": p.matvars['solution'].Fut,  "Fr": p.matvars['solution'].Fr,  "K_rope": 0.0, "Tf": p.matvars['solution'].Tf }]
-            #double jump
-            #p.matvars1 = mio.loadmat('test_optim_marco1.mat', squeeze_me=True, struct_as_record=False)
-            #p.matvars2 = mio.loadmat('test_optim_marco2.mat', squeeze_me=True, struct_as_record=False)
-            #p.jumps = [{"time": p.matvars1['solution'].time, "thrustDuration" : p.matvars1['T_th'], "p0": p.matvars['p0'], "targetPos": p.matvars1['pf'], "Fun": p.matvars1['solution'].Fun, "Fut": p.matvars1['solution'].Fut,  "Fr": p.matvars1['solution'].Fr, "K_rope": 0.0, "Tf": p.matvars1['solution'].Tf - p.matvars1['T_th']},
-            #            {"time": p.matvars2['solution'].time, "thrustDuration" : p.matvars2['T_th'], "p0": p.matvars['p0'], "targetPos": p.matvars2['pf'], "Fun": p.matvars2['solution'].Fun, "Fut": p.matvars2['solution'].Fut,  "Fr": p.matvars2['solution'].Fr, "K_rope": 0.0, "Tf": p.matvars2['solution'].Tf - p.matvars2['T_th']}]
-            #            {"time": p.matvars2['solution'].time, "thrustDuration" : p.matvars2['T_th'], "p0": p.matvars['p0'], "targetPos": p.matvars2['pf'], "Fun": p.matvars2['solution'].Fun, "Fut": p.matvars2['solution'].Fut,  "Fr": p.matvars2['solution'].Fr, "K_rope": 0.0, "Tf": p.matvars2['solution'].Tf - p.matvars2['T_th']}]
 
-        else:#my approach
+        else:#MICHELE approach
             p.matvars = mio.loadmat('test_optim.mat', squeeze_me=True, struct_as_record=False)
             p.jumps = [{"thrustDuration" : p.matvars['T_th'], "p0": p.matvars['p0'],  "targetPos": p.matvars['pf'], "Fun": p.matvars['solution'].Fun, "Fut": p.matvars['solution'].Fut,  "Fr": p.matvars['solution'].Fr,  "K_rope": 0.0, "Tf": p.matvars['solution'].Tf -  p.matvars['T_th']}]
 
